@@ -28,6 +28,7 @@ export type ReducerAction = {
 const reducer = (state: CartStateType, action: ReducerAction): CartStateType => {
     switch(action.type) {
         case REDUCER_ACTION_TYPE.ADD: {
+            //* Type Guards
             if (!action.payload) {
                 throw new Error('action.payload missing in ADD action')
             }
@@ -46,6 +47,7 @@ const reducer = (state: CartStateType, action: ReducerAction): CartStateType => 
             if (!action.payload) {
                 throw new Error('action.payload missing in REMOVE action')
             }
+
             const { sku } = action.payload
 
             const filteredCart: CartItemType[] = state.cart.filter(item => item.sku !== sku);
@@ -56,6 +58,7 @@ const reducer = (state: CartStateType, action: ReducerAction): CartStateType => 
             if (!action.payload) {
                 throw new Error('action.payload missing in QUANTITY action')
             }
+            
             const { sku, qty } = action.payload
             
             const itemExists: CartItemType | undefined = state.cart.find(item => item.sku === sku);
@@ -78,6 +81,7 @@ const reducer = (state: CartStateType, action: ReducerAction): CartStateType => 
     }
 }
 
+// * Creating UseCartContext
 const useCartContext = (initialCartState: CartStateType) => {
     const [state, dispatch] = useReducer(reducer, initialCartState);
 
@@ -125,3 +129,5 @@ export const CartProvider = ({ children }: ChildrenType): ReactElement => {
         </CartContext.Provider>
     )
 }
+
+export default CartProvider;
